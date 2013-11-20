@@ -1,7 +1,7 @@
 from nose.tools import eq_, ok_
 
 from canon_set import CanonicalSet
-from cyclic_cache import CyclicCache, CyclicCacheFactory
+from cyclic_cache import CyclicCacheFactory
 
 CACHE_SIZE = 4
 
