@@ -30,6 +30,8 @@ class EquivPart(object):
         """
         This enumerates all sets that we are sure an non-empty. O(n).
         """
+        # NOTE: this is maintained as a list, because we want to work with
+        # non-hashables as well.
         return [x.get_canonical() for x in self._sets.values()]
 
     def disconnect(self,f,examples=None):
@@ -63,25 +65,23 @@ class EquivPart(object):
 
     def force_canon(self,item):
         """
-        Force this item to become the canonical of its set.
+        Force this item to become the canonical of its set. Returns it as well.
         """
-        s = self._get_set(item)
+        index = self._get_index(item)
+        s = self._sets.get(index,None)
         if s is not None:
-            s.force_canon(item,hints.FORCED_CANON)
+            s.new_canon(item,hints.FORCED_CANON)
         else:
             s = CanonicalSet(item,self._cache_factory,hints.FORCED_CANON)
             self._sets[index] = s
         return item
 
-    def _get_set(self,item):
+    def _get_index(self,item):
         """
-        Return the set containing the given item, or None if doesn't exist yet.
+        Get the filter-index for a given item. This uniquely determines in
+        which (logical) set it belongs.
         """
-        index = tuple([f(item) for f in self._filters])
-        if index in self._sets:
-            return self._sets[index]
-        else:
-            return None
+        return tuple([f(item) for f in self._filters])
 
     def _inner_canonify(self,item,hint):
         """
@@ -89,7 +89,8 @@ class EquivPart(object):
         Optionally accepts a hint, which will be passed on to cache to
         determine how strongly to hold on to this value.
         """
-        s = self._get_set(item)
+        index = self._get_index(item)
+        s = self._sets.get(index,None)
         if s is not None:
             s.append_sample(item,hint)
         else:
