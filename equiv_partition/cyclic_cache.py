@@ -20,6 +20,8 @@ class CyclicCache(object):
     def __init__(self,cache_size):
         self._cache_size = cache_size
         # List of cached items.
+        # NOTE: this is maintained as a list, because we want to work with
+        # non-hashables as well.
         self._items = []
         # Index of oldest item.
         self._next_other = 0
