@@ -1,7 +1,12 @@
+"""
+Canonical set.
+"""
+
 class CanonicalSet(object):
     """
     A representation of a small sample from a set, including a canonical item.
     Gets the cache_holder to use, and possibly more kwargs to pass to it.
+    For all assymptotical analysis, we denote the cache-size by k.
     """
     def __init__(self,canonical,cache_factory,canon_hint=None):
         self._canonical = canonical

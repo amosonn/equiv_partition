@@ -2,6 +2,7 @@
 Equivalence partitions.
 """
 from cyclic_cache import CyclicCacheFactory
+from canon_set import CanonicalSet
 import hints
 
 class EquivPart(object):
