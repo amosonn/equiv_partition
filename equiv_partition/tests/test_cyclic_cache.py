@@ -1,5 +1,5 @@
 from nose.tools import eq_, ok_
-from equiv import CanonicalSet, EquivPart
+
 from cyclic_cache import CyclicCache, CyclicCacheFactory
 
 def check_cyclic_cache_count(c,n):
@@ -24,24 +24,27 @@ def check_cyclic_cache_values(c,n):
         eq_(list(iter(c)),range(i+1))
     for i in xrange(n):
         c.add(i+n)
-        eq_(list(iter(c)),range(n,i+n+1)+range(i+1,4))
+        eq_(list(iter(c)),range(n,i+n+1)+range(i+1,n))
 
 def test_cyclic_cache_count():
     """
     Test that CyclicCache items count is good.
     """
-    check_cyclic_cache_count(CyclicCache(4),4)
+    for cache_size in xrange(3,7):
+        check_cyclic_cache_count(CyclicCache(cache_size),cache_size)
 
 def test_cyclic_cache_values():
     """
     Test that CyclicCache values are good.
     """
-    check_cyclic_cache_values(CyclicCache(4),4)
+    for cache_size in xrange(3,7):
+        check_cyclic_cache_values(CyclicCache(cache_size),cache_size)
 
 def test_cyclic_cache_factory():
     """
     Test that the CyclicCacheFactory returns good CyclicCache-s.
     """
-    cf = CyclicCacheFactory(4)
-    check_cyclic_cache_values(cf(),4)
-    check_cyclic_cache_count(cf(),4)
+    for cache_size in xrange(3,7):
+        cf = CyclicCacheFactory(cache_size)
+        check_cyclic_cache_values(cf(),cache_size)
+        check_cyclic_cache_count(cf(),cache_size)
